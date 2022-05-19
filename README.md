@@ -1,5 +1,7 @@
 # vmware-tap
 
+### Installation scripts for installing Tanzu Application Platform locally
+
 1. Create developer credentials and namespace
 ```sh
 # Update values in ./scripts/create-dev-ns.sh
@@ -20,7 +22,12 @@ tanzu package installed update tap -p tap.tanzu.vmware.com -v 1.1.0  --values-fi
 kubectl apply -f testing-scanning.yaml -n $DEV_NAMESPACE
 ```
 
+4. Create Github Credentials for Private Repository
+```sh
+kubectl apply -f github-credentials.yaml -n $DEV_NAMESPACE
+```
 
+---
 
-Python FastAPI accelerator available at this [repo](https://github.com/guyzsarun/python-fastapi-accelerator)
+Example Python FastAPI Accelerator available at this [repo](https://github.com/guyzsarun/python-fastapi-accelerator)
 
