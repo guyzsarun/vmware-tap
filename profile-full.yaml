@@ -1,0 +1,57 @@
+.credentials: &credentials
+  kp_default_repository: "index.docker.io/DOCKERHUB_ID/build-service"
+  kp_default_repository_username: DOCKERHUB_ID
+  kp_default_repository_password: DOCKERHUB_PASSWORD
+  tanzunet_username:
+  tanzunet_password:
+
+---
+
+profile: full
+ceip_policy_disclosed: true
+buildservice:
+  <<: *credentials
+  descriptor_name: "full"
+supply_chain: testing_scanning
+
+cnrs:
+  domain_name: "tap.local"
+
+ootb_supply_chain_testing_scanning:
+  registry:
+    server: "index.docker.io"
+    repository: "DOCKERHUB_ID"
+  gitops:
+    ssh_secret: "github-cred"
+
+learningcenter:
+  ingressDomain: "learningcenter.tap.local"
+
+tap_gui:
+  service_type: LoadBalancer
+  ingressEnabled: "true"
+  ingressDomain: "tap.local"
+  app_config:
+    app:
+      baseUrl: http://tap-gui.tap.local:30616
+    catalog:
+      locations:
+        - type: url
+          target: https://github.com/guyzsarun/vmware-tap/blob/catalog/yelb-catalog/catalog-info.yaml
+    backend:
+      baseUrl: http://tap-gui.tap.local:30616
+      cors:
+        # From minikube ip
+        origin: http://172.16.174.130:30616
+
+contour:
+  envoy:
+    service:
+      type: LoadBalancer
+
+metadata_store:
+  app_service_type: LoadBalancer # (optional) Defaults to LoadBalancer. Change to NodePort for distributions that don't support LoadBalancer
+
+grype:
+  namespace: "dev-namespace" # (optional) Defaults to default namespace.
+  targetImagePullSecret: "tap-registry"
